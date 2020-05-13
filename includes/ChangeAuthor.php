@@ -366,10 +366,22 @@ class ChangeAuthor extends SpecialPage {
 				/* SET */[
 					'rev_user' => $users[1]->getId(),
 					'rev_user_text' => $users[1]->getName()
+//					'rev_actor' => $users[1]->getActorId()    // This needs to be added when the column will be there.
 				],
 				[ 'rev_id' => $id ], // WHERE
 				__METHOD__
 			);
+
+			// Now also change the revision_actor_temp table :
+			$dbw->update(
+				'revision_actor_temp',
+				/* SET */[
+					'revactor_actor' => $users[1]->getActorId()
+					],
+				[ 'revactor_rev' => $id ], // WHERE
+				__METHOD__
+			);
+
 			$rev = Revision::newFromId( $id );
 
 			$logEntry = new ManualLogEntry( 'changeauth', 'changeauth' );
