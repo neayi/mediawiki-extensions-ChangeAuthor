@@ -355,18 +355,7 @@ class ChangeAuthor extends SpecialPage {
 		$editcounts = []; // Array to keep track of EC mutations; key=userid, value=mutation
 
 		foreach ( $authors as $id => $users ) {
-			$dbw->update(
-				'revision',
-				/* SET */[
-					'rev_user' => $users[1]->getId(),
-					'rev_user_text' => $users[1]->getName()
-//					'rev_actor' => $users[1]->getActorId()    // This needs to be added when the column will be there.
-				],
-				[ 'rev_id' => $id ], // WHERE
-				__METHOD__
-			);
-
-			// Now also change the revision_actor_temp table :
+			// Change the revision_actor_temp table :
 			$dbw->update(
 				'revision_actor_temp',
 				/* SET */[
