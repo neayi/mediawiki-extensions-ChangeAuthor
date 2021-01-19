@@ -36,7 +36,11 @@ class ChangeAuthor extends SpecialPage {
 		return 'pagetools';
 	}
 
-	// @see https://phabricator.wikimedia.org/T123591
+	/**
+	 * @see https://phabricator.wikimedia.org/T123591
+	 *
+	 * @return string
+	 */
 	public function doesWrites() {
 		return true;
 	}
@@ -244,11 +248,11 @@ class ChangeAuthor extends SpecialPage {
 		);
 
 		$revs = [];
-		while ( ( $r = $dbr->fetchObject( $res ) ) ) {
+		foreach ( $res as $r ) {
 			$revs[] = new Revision( $r );
 		}
 
-		if ( empty( $revs ) ) {
+		if ( $revs === [] ) {
 			// That's *very* weird
 			return $this->msg( 'changeauthor-weirderror' )->text();
 		}
